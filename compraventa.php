@@ -53,7 +53,20 @@ $resultado = mysqli_query($conexion, $query);
                     alt="<?php echo $coche['brand']; ?>"
                     style="height: 220px; object-fit: cover;">
                 
-                <span class="position-absolute top-0 end-0 m-3 badge bg-dark bg-opacity-75 rounded-pill">
+                <?php 
+                    
+                    $fecha_publicacion = strtotime($coche['created_at']);
+                
+                    $hace_un_mes = strtotime('-30 days');
+
+                    if ($fecha_publicacion >= $hace_un_mes): 
+                ?>
+                    <span class="position-absolute top-0 start-0 m-3 badge bg-success text-white bg-opacity-95 rounded-pill shadow-sm" style="z-index: 2;">
+                        <i class="me-1"></i> NUEVO
+                    </span>
+                <?php endif; ?>
+
+                <span class="position-absolute top-0 end-0 m-3 badge bg-primary bg-opacity-90 rounded-pill">
                     <?php echo $coche['fuel_type']; ?>
                 </span>
             </div>

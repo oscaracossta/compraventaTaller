@@ -88,6 +88,10 @@ $fotos = !empty($coche['main_photo']) ? explode(',', $coche['main_photo']) : [];
                             <small class="text-muted d-block">Transmisión</small>
                             <span class="fw-bold"><?php echo $coche['gears']; ?></span>
                         </div>
+                    </div> 
+                    <div class="mt-4 p-3 bg-light rounded-4">
+                        <h5>Descripción del vehículo</h5>
+                        <p><?php echo nl2br($coche['description']); ?></p>
                     </div>
                 </div>
 

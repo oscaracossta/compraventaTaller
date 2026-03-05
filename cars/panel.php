@@ -95,13 +95,17 @@ $resultado = mysqli_query($conexion, $query);
                                     </td>
 
                                     <td class="text-end pe-4">
+                                        <a href="editar_coche.php?id=<?php echo $id_coche; ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-2">
+                                            <i class="bi bi-pencil-square"></i> Editar
+                                        </a>
                                         <form id="form-eliminar-<?php echo $id_coche; ?>" action="eliminar_coche.php" method="POST" class="d-inline">
                                             <input type="hidden" name="id_coche" value="<?php echo $id_coche; ?>">
+                                            
                                             <button type="button" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2"
                                                 onclick="confirmarAccion('¿Eliminar vehículo?', '¿Estás seguro de que quieres borrar el <?php echo $nombre; ?>? Esta acción es irreversible.', () => document.getElementById('form-eliminar-<?php echo $id_coche; ?>').submit())">
                                                 <i class="bi bi-trash3 fs-5"></i>
-                                            </button>
-                                        </form>
+                                            </button> 
+                                        </form> 
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -148,7 +152,7 @@ $resultado = mysqli_query($conexion, $query);
                             </div>
                             <div class="col-6">
                                 <label class="form-label small fw-bold">Año</label>
-                                <input type="number" name="year" class="form-control rounded-3" value="2024" required>
+                                <input type="number" name="year" class="form-control rounded-3" placeholder="Ej: 2024" required>
                             </div>
                             <div class="col-6">
                                 <label class="form-label small fw-bold">Combustible</label>
@@ -166,6 +170,10 @@ $resultado = mysqli_query($conexion, $query);
                                     <option value="Manual">Manual</option>
                                     <option value="Automático">Automático</option>
                                 </select>
+                            </div>
+                            <div class="mb-3 d-flex align-items-start">
+                                <label class="form-label me-3 mt-1">Descripción</label>
+                                <textarea name="description" class="form-selected rounded-3" rows="3" placeholder="Datos relevantes no especificados"></textarea>
                             </div>
                             <div class="col-6">
                                 <label class="form-label small fw-bold">Precio (€)</label>
@@ -190,25 +198,23 @@ $resultado = mysqli_query($conexion, $query);
 
     <script>
     document.getElementById('formNuevoCoche').addEventListener('submit', function(e) {
-    // 1. Evitamos que el formulario se envíe de la forma tradicional
+    
     e.preventDefault();
     
-    // 2. Referencias a elementos de la interfaz
+
     const btnGuardar = document.getElementById('btnGuardar');
     const btnTexto = document.getElementById('btnTexto');
     const btnCarga = document.getElementById('btnCarga');
 
-    // 3. Bloqueo de seguridad: Si ya se está enviando, salimos
+
     if(btnGuardar.disabled) return;
     
     btnGuardar.disabled = true;
     btnTexto.classList.add('d-none');
     btnCarga.classList.remove('d-none');
 
-    // 4. Captura de todos los datos (incluyendo fotos y fuel_type)
     const datos = new FormData(this); 
 
-    // 5. Envío único al servidor
     fetch('crear_coche.php', {
         method: 'POST',
         body: datos
@@ -216,17 +222,15 @@ $resultado = mysqli_query($conexion, $query);
     .then(res => res.text())
     .then(data => {
         if (data.trim() === "success") {
-            // Cerramos modal si existe y lanzamos aviso
             const modalEl = document.getElementById('modalSubir');
             const modalBus = bootstrap.Modal.getInstance(modalEl);
             if(modalBus) modalBus.hide();
             
             lanzarAviso("¡Vehículo guardado correctamente!", "success");
             
-            // Recarga limpia tras el éxito
             setTimeout(() => location.reload(), 1500);
         } else {
-            // Si hay error, desbloqueamos para corregir
+            
             lanzarAviso("Error: " + data, "danger");
             btnGuardar.disabled = false;
             btnTexto.classList.remove('d-none');

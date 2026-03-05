@@ -11,8 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     $kms       = mysqli_real_escape_string($conexion, $_POST['kms']);
     $gears     = mysqli_real_escape_string($conexion, $_POST['gears']);
     $year      = mysqli_real_escape_string($conexion, $_POST['year']);
-    $fuel_type = mysqli_real_escape_string($conexion, $_POST['fuel_type']); 
-    $status    = "Público"; 
+    $fuel_type = mysqli_real_escape_string($conexion, $_POST['fuel_type']);
+    $description = mysqli_real_escape_string($conexion, $_POST['description']);
+    $status = "Público"; 
 
     $nombres_imagenes = [];
     if (isset($_FILES['fotos']) && !empty($_FILES['fotos']['name'][0])) {
@@ -28,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     }
     $fotos_db = implode(",", $nombres_imagenes);
 
-    $sql = "INSERT INTO cars (brand, model, price, user_id, kms, gears, manufacture_year, fuel_type, status, main_photo) 
-            VALUES ('$brand', '$model', '$price', '$user_id', '$kms', '$gears', '$year', '$fuel_type', '$status', '$fotos_db')";
+    $sql = "INSERT INTO cars (brand, model, price, user_id, kms, gears, manufacture_year, fuel_type, description, status, main_photo) 
+            VALUES ('$brand', '$model', '$price', '$user_id', '$kms', '$gears', '$year', '$fuel_type', '$description', '$status', '$fotos_db')";
 
     if (mysqli_query($conexion, $sql)) {
         echo "success"; 
